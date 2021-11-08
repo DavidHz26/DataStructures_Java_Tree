@@ -1,5 +1,8 @@
 package LinkedListImplementation;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BinaryTree {
 
     public BinaryTree() {
@@ -27,7 +30,36 @@ public class BinaryTree {
         inOrder(root.getRight());
     }
 
-    private void postOrder(TNode root) {
-        System.out.println("postOrder");
+    public void postOrder(TNode root) {
+        if(root == null) {
+            return;
+        }
+
+        postOrder(root.getLeft());
+        postOrder(root.getRight());
+        System.out.print(root);
+    }
+
+    public void levelOrder(TNode root) {
+        if(root == null) {
+            return;
+        }
+
+        Queue<TNode> list = new LinkedList<TNode>();
+        list.add(root);
+
+        while(!list.isEmpty()) {
+
+            if(list.peek().getLeft() != null) {
+                list.add(list.peek().getLeft());
+            }
+
+            if(list.peek().getRight() != null) {
+                list.add(list.peek().getRight());
+            }
+
+            System.out.print(list.peek());
+            list.remove(list.peek());
+        }
     }
 }

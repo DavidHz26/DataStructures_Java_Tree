@@ -35,6 +35,14 @@ public class Main {
         tree.inOrder(root);
         System.out.println();
 
+        System.out.println("Post-Order");
+        tree.postOrder(root);
+        System.out.println();
+
+        System.out.println("Level_Order");
+        tree.levelOrder(root);
+        System.out.println();
+
 
     }
 
