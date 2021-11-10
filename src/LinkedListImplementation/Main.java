@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        BinaryTree tree = new BinaryTree();
+        BinaryTreeOps tree = new BinaryTreeOps();
 
         TNode root = new TNode(20);
 
@@ -16,7 +16,7 @@ public class Main {
         root.getLeft().setLeft(new TNode(50));
         root.getLeft().setRight(new TNode(15));
 
-        //3th gen
+//        //3th gen
         root.getLeft().getLeft().setLeft(new TNode(222));
 
         //RIGHT SUBTREE
@@ -39,10 +39,32 @@ public class Main {
         tree.postOrder(root);
         System.out.println();
 
-        System.out.println("Level_Order");
+        System.out.println("Level-Order");
         tree.levelOrder(root);
         System.out.println();
 
+        System.out.println("Search");
+        tree.searchData(root, 15);
+        System.out.println();
+
+        System.out.println("Insert");
+        tree.insertData(root, 300);
+        tree.insertData(root, 400);
+        System.out.println();
+
+        System.out.println("Delete");
+        tree.deleteData(root, 20);
+        System.out.println();
+
+        System.out.println("Level-Order");
+        tree.levelOrder(root);
+        System.out.println();
+        System.out.println();
+
+        System.out.println("DeleteTree");
+        tree.deleteTree(root);
+
+        tree.levelOrder(root);
 
     }
 

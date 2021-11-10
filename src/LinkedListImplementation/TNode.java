@@ -6,6 +6,12 @@ public class TNode {
     private TNode right;
     private TNode left;
 
+    public TNode() {
+        data = -1;
+        right = null;
+        left = null;
+    }
+
     public TNode(int data) {
         this.data = data;
         right = null;
@@ -14,6 +20,10 @@ public class TNode {
 
     public void setData(int data) {
         this.data = data;
+    }
+
+    public int getData() {
+        return data;
     }
 
     public void setRight(TNode node) {
