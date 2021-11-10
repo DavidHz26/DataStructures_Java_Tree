@@ -1,4 +1,4 @@
-package LinkedListImplementation;
+package BinaryTree.LinkedListImplementation;
 
 public class TNode {
 

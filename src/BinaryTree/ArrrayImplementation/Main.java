@@ -1,9 +1,9 @@
-package ArrrayImplementation;
+package BinaryTree.ArrrayImplementation;
 
 public class Main {
     public static void main(String[] args) {
 
-        BinaryTree tree = new BinaryTree(10);
+        BinaryTreeOps tree = new BinaryTreeOps(10);
 
         tree.insertData(20);
         tree.insertData(100);

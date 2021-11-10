@@ -1,4 +1,4 @@
-package LinkedListImplementation;
+package BinaryTree.LinkedListImplementation;
 
 import java.util.LinkedList;
 import java.util.Queue;

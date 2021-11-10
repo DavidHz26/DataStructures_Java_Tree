@@ -1,8 +1,8 @@
-package ArrrayImplementation;
+package BinaryTree.ArrrayImplementation;
 
 import java.util.Arrays;
 
-public class BinaryTree {
+public class BinaryTreeOps {
     private int[] array;
     private int x;
     private int xCount;
@@ -11,7 +11,7 @@ public class BinaryTree {
 
     //IMPORTANT: array[0] is not used
 
-    public BinaryTree(int size) {
+    public BinaryTreeOps(int size) {
         array = new int[size];
         Arrays.fill(array, -1);
         x = 0;
