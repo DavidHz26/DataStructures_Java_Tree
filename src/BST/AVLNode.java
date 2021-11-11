@@ -1,12 +1,12 @@
 package BST;
 
-public class BSTNode {
+public class AVLNode {
 
     private int data;
-    private BSTNode left;
-    private BSTNode right;
+    private AVLNode left;
+    private AVLNode right;
 
-    public BSTNode(int data) {
+    public AVLNode(int data) {
 
         this.data = data;
         left = null;
@@ -21,19 +21,19 @@ public class BSTNode {
         return data;
     }
 
-    public void setLeft(BSTNode left) {
+    public void setLeft(AVLNode left) {
         this.left = left;
     }
 
-    public BSTNode getLeft() {
+    public AVLNode getLeft() {
         return left;
     }
 
-    public void setRight(BSTNode right) {
+    public void setRight(AVLNode right) {
         this.right = right;
     }
 
-    public BSTNode getRight() {
+    public AVLNode getRight() {
         return right;
     }
 

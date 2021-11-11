@@ -9,7 +9,7 @@ public class BinarySearchTree {
         System.out.println("Tree operations ready");
     }
 
-    public BSTNode searchData(BSTNode root, int data) {
+    public AVLNode searchData(AVLNode root, int data) {
 
         if(root == null) {
             return null;
@@ -40,7 +40,7 @@ public class BinarySearchTree {
         return null;
     }
 
-    public void preOrder(BSTNode root) {
+    public void preOrder(AVLNode root) {
         if(root == null) {
             return;
         }
@@ -50,7 +50,7 @@ public class BinarySearchTree {
         preOrder(root.getRight());
     }
 
-    public void inOrder(BSTNode root) {
+    public void inOrder(AVLNode root) {
         if(root == null) {
             return;
         }
@@ -60,7 +60,7 @@ public class BinarySearchTree {
         inOrder(root.getRight());
     }
 
-    public void postOrder(BSTNode root){
+    public void postOrder(AVLNode root){
         if(root == null) {
             return;
         }
@@ -70,12 +70,12 @@ public class BinarySearchTree {
         System.out.print(root);
     }
 
-    public void levelOrder(BSTNode root) {
+    public void levelOrder(AVLNode root) {
         if(root == null) {
             return;
         }
 
-        Queue<BSTNode> queue = new LinkedList<>();
+        Queue<AVLNode> queue = new LinkedList<>();
         queue.add(root);
 
         while(!queue.isEmpty()) {
@@ -92,7 +92,7 @@ public class BinarySearchTree {
         }
     }
 
-    public BSTNode insertData(BSTNode currentNode, int data) {
+    public AVLNode insertData(AVLNode currentNode, int data) {
 
         //current node starts from the root
         //if the current node is empty then we found the space where data needs to be inserted
@@ -104,14 +104,14 @@ public class BinarySearchTree {
         //nodes previous to find an empty space will not be updated.
 
         if(currentNode == null) {
-            currentNode = new BSTNode(data);
+            currentNode = new AVLNode(data);
             return currentNode;
         }
 
         if(data <= currentNode.getData()) {
             currentNode.setLeft(insertData(currentNode.getLeft(), data));
 
-        } else if(data >= currentNode.getData()) {
+        } else if(data > currentNode.getData()) {
             currentNode.setRight(insertData(currentNode.getRight(), data));
         }
 
@@ -119,7 +119,7 @@ public class BinarySearchTree {
 
     }
 
-    public BSTNode deleteData(BSTNode root, int data) {
+    public AVLNode deleteData(AVLNode root, int data) {
         if(root == null) {
             return null;
         }
@@ -139,7 +139,7 @@ public class BinarySearchTree {
             //If root has two childs, we find the min node in right subtree, and update root with the min node,
             //and lastly we delete the min node
             if(root.getLeft() != null && root.getRight() != null) {
-                BSTNode node = minLeftInRight(root.getRight());
+                AVLNode node = minLeftInRight(root.getRight());
                 System.out.println("Replacement " + node);
                 System.out.println(root + "updated to " + node);
                 deleteMinNode(root, root, node);
@@ -169,7 +169,7 @@ public class BinarySearchTree {
         return root;
     }
 
-    private BSTNode minLeftInRight(BSTNode root) {
+    private AVLNode minLeftInRight(AVLNode root) {
         if(root == null) {
             return null;
         }
@@ -181,12 +181,12 @@ public class BinarySearchTree {
         }
     }
 
-    private void deleteMinNode(BSTNode root, BSTNode toDelete, BSTNode lastNode) {
+    private void deleteMinNode(AVLNode root, AVLNode toDelete, AVLNode lastNode) {
         if(root == null) {
             return;
         }
 
-        Queue<BSTNode> queue = new LinkedList<>();
+        Queue<AVLNode> queue = new LinkedList<>();
         queue.add(root);
 
         while(!queue.isEmpty()) {
@@ -216,7 +216,7 @@ public class BinarySearchTree {
         }
     }
 
-    public void deleteTree(BSTNode root) {
+    public void deleteTree(AVLNode root) {
         root = null;
         System.out.println("Felled Tree");
     }
