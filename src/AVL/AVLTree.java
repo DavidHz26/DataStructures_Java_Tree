@@ -45,31 +45,41 @@ public class AVLTree {
         //Right-Right Cond -> leftRotate(root)
         //Right-Left Cond -> leftRotate(root.right)
 
+        //If left subtree is overloaded
         if(b > 1) {
             if (height(root.getRight().getRight()) <= height(root.getRight().getLeft())) {
+                System.out.println("Right-Left");
                 root.setRight(rightRotate(root.getRight()));
             }
+
+            System.out.println("Right-Right");
             root = leftRotate(root);
         }
-        else if(b < -1) {
-            //if height of left-left is less than height of left-right
-            //then we rotate to left the root.left, but the tree still is going to be disbalanced
+
+        //If right subtree is overloaded
+        else if(b > -1) {
+            //Here we need to check to which side is going to rotate by checking the height of the trees
+
+            //if height of left-left is greater than height of left-right then we simply rotate to right the root
+            //but if height of left-left is less than height of left-right
+            //then we need to rotate to left the root.left, but the tree still is going to be disbalanced
             if (height(root.getLeft().getLeft()) <= height(root.getLeft().getRight())) {
+                System.out.println("Left-Right");
                 root.setLeft(leftRotate(root.getLeft()));
             }
 
             //So we rotate root now to right to organize the tree in a balanced way
+            System.out.println("Left-Left");
             root = rightRotate(root);
 
             //Example:
-            //      40                            40                                   40                                40
-            //  30      50    [add 25]        30      50     [leftRotation]         30    50    [rightRotation]      25       50
-            //20                           20                                    25                               20    30
+            //      40                            40                                   40       still disbalanced so              40
+            //  30      50    [add 25]        30      50     [leftRotation]         30    50      [rightRotation]             25       50
+            //20                           20                                    25                                        20    30
             //                                25                              20
         }
 
         return root;
-
     }
 
     private int height(AVLNode node) {
@@ -86,26 +96,59 @@ public class AVLTree {
 
     private void updateHeight(AVLNode root) {
 
-        //Set the node height to the maximum height of children + 1
+        //formula to get or update of a current node is:
+        //height(node) = max(height(node.left), height(node.right)) + 1
 
-        //Height of root.getLeft
-        int leftHeight = height(root.getLeft());
+        //For example:        [40]
+        //              [20]        [50]
+        //         [10]      [30]
 
-        //Height of root.getRight
-        int rightHeight = height(root.getRight());
 
-        //We compare and get the child with more height
-        int max = Math.max(leftHeight, rightHeight);
+        //If node is null (height = -1) <height class>
+        //So if we want the height of 10, 10.left and 10.right are null
+        //So height(10) = max(-1, -1) + 1
+        //both childs height are the same, so we took any plus 1
+        //h[10] = -1 + 1 = 0;  so height of 10 is 0
+        //now, height of 20; h(20) = max(20.left <10>, 20.right <30>) + 1
+        //if node doesn't have any childs then his height is 0, as we prove with 10
+        //so h[20] = max(0,0) + 1 and the result is 1
+        //h[40] = max(1 <height of 20>, 0 <no childs in 50>) + 1
+        //so h[40] = 2
 
-        root.setHeight(1 + max);
+
+        //So following the formula h(n) = max(h(n.left), h(n.right)) + 1
+        int h = Math.max(height(root.getLeft()), height(root.getRight())) + 1;
+
+        //And lastly we update the height
+        root.setHeight(h);
     }
 
     private int balance(AVLNode node) {
-        //We calculate the difference between left and right subtree
-        //If the difference in heights is 1 is acceptable
-        //If is equal or greater than 2 the tree is unbalanced
 
-        //If node = null, then we stop and return 0
+        //Formula for balance is balance(node) = height(node.left) - height(node.right);
+
+        //Balance checks if the difference in height is too much
+        //the acceptable difference is 1 in height, more than that the tree is disbalanced
+
+        //So using the example from updateHeight class
+
+        //If we try to add a node 5, it will go to the left of 10
+        //then we calculate his balance
+
+        //balance[5] = height(node.left) <-1 because null>, height(node.right)  <again null so -1>
+        //then balance[5] = (-1) - (-1) = 0;  0 is greater that -2 and less than 2? Yes; so tree is balanced
+
+        //since balance is in a recursive function, then we go to his parent [10] and again
+        //b[10] = height(10.left) <5, doesn't have childs so his length is 0> - height(10.right) <null so -1>
+        //b[10] = 0 - (-1) = 1;  1 is greater than -2 and less than 2? Yes; so tree is balanced
+
+        //Now we go to 10 parent, 20
+        //b[20] = h(10) - h(30) = 1 - 0 = 1 so its balanced
+
+        //Now 20 parent, 40
+        //b[40] = h(20) - h(50) = 2 - 0 = 2, and here 2 is greater that -2 and less than 2? NO, so tree is unbalanced
+        //And we need to rotate the tree
+
         if(node == null) {
             return 0;
         }
