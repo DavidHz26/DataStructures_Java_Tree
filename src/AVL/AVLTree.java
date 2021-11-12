@@ -40,43 +40,43 @@ public class AVLTree {
 
         int b = balance(root);
 
-        //Left-Left Cond -> rightRotate(root)
-        //Left-Right Cond -> rightRotate(root.left)
-        //Right-Right Cond -> leftRotate(root)
-        //Right-Left Cond -> leftRotate(root.right)
-
         //If left subtree is overloaded
-        if(b > 1) {
-            if (height(root.getRight().getRight()) <= height(root.getRight().getLeft())) {
-                System.out.println("Right-Left");
-                root.setRight(rightRotate(root.getRight()));
-            }
-
-            System.out.println("Right-Right");
-            root = leftRotate(root);
-        }
-
-        //If right subtree is overloaded
-        else if(b > -1) {
+        if(b < -1) {
             //Here we need to check to which side is going to rotate by checking the height of the trees
 
             //if height of left-left is greater than height of left-right then we simply rotate to right the root
+            if (height(root.getLeft().getLeft()) > height(root.getLeft().getRight())) {
+                System.out.println("Left-Left");
+                root = rightRotate(root);
+            } else {
             //but if height of left-left is less than height of left-right
             //then we need to rotate to left the root.left, but the tree still is going to be disbalanced
-            if (height(root.getLeft().getLeft()) <= height(root.getLeft().getRight())) {
                 System.out.println("Left-Right");
                 root.setLeft(leftRotate(root.getLeft()));
-            }
 
-            //So we rotate root now to right to organize the tree in a balanced way
-            System.out.println("Left-Left");
-            root = rightRotate(root);
+                //So we rotate root now to right to organize the tree in a balanced way
+                root = rightRotate(root);
+
+               // root = rightRotate(leftRotate(root.getLeft()));
+            }
 
             //Example:
             //      40                            40                                   40       still disbalanced so              40
             //  30      50    [add 25]        30      50     [leftRotation]         30    50      [rightRotation]             25       50
             //20                           20                                    25                                        20    30
             //                                25                              20
+        }
+
+        //If right subtree is overloaded
+        else if(b > 1) {
+            if (height(root.getRight().getRight()) > height(root.getRight().getLeft())) {
+                System.out.println("Right-Right");
+                root = leftRotate(root);
+            } else {
+                System.out.println("Right-Left");
+                root.setRight(rightRotate(root.getRight()));
+                root = leftRotate(root);
+            }
         }
 
         return root;
@@ -186,6 +186,124 @@ public class AVLTree {
         return newRoot;
     }
 
+    public void deleteData(int data) {
+        root = delete(root, data);
+    }
+
+    private AVLNode delete(AVLNode root, int data) {
+
+        if(root == null) {
+            return null;
+        }
+
+        if(data == root.getData()) {
+            //root has 2 childs
+            if(root.getLeft() != null && root.getRight() != null) {
+                AVLNode min = minLeftInRight(root.getRight());
+                return deleteMinNode(root, root, min);
+            }
+
+            //root has 1 child
+            if(root.getLeft() != null) {
+                return root.getLeft();
+            }
+            else if(root.getRight() != null) {
+                return root.getRight();
+            }
+
+            //root is leaf
+            return null;
+        }
+
+        if(data < root.getData()) {
+            root.setLeft(delete(root.getLeft(), data));
+        } else if(data > root.getData()) {
+            root.setRight(delete(root.getRight(), data));
+        }
+
+        updateHeight(root);
+
+        int b = balance(root);
+
+        //left is overloaded
+        if(b < -1) {
+            if(height(root.getLeft().getLeft()) > height(root.getLeft().getRight())) {
+                System.out.println("Left-Left");
+                root = rightRotate(root);
+            } else {
+                System.out.println("Left-Right");
+                root.setLeft(leftRotate(root.getLeft()));
+
+                root = rightRotate(root);
+            }
+        }
+
+        //right is overloaded
+        else if(b > 1) {
+            if(height(root.getRight().getRight()) > height(root.getRight().getLeft())) {
+                System.out.println("Right-Right");
+                root = leftRotate(root);
+            } else {
+                System.out.println("Right-Left");
+                root.setRight(rightRotate(root.getRight()));
+
+                root = leftRotate(root);
+            }
+        }
+
+
+        return root;
+    }
+
+    private AVLNode minLeftInRight(AVLNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        if(root.getLeft() != null) {
+            return minLeftInRight(root.getLeft());
+        } else {
+            return root;
+        }
+    }
+
+    private AVLNode deleteMinNode(AVLNode root, AVLNode toDelete, AVLNode lastNode) {
+
+        if(root == null) {
+            return null;
+        }
+
+        Queue<AVLNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+
+            if(queue.peek().getLeft() != null) {
+                queue.add(queue.peek().getLeft());
+            }
+
+            if(queue.peek().getRight() != null) {
+                queue.add(queue.peek().getRight());
+            }
+
+            if(queue.peek() == toDelete) {
+                toDelete.setData(lastNode.getData());
+            }
+
+            if(queue.peek().getLeft() == lastNode) {
+                queue.peek().setLeft(null);
+            }
+
+            if(queue.peek().getRight() == lastNode) {
+                queue.peek().setRight(null);
+            }
+
+            queue.remove(queue.peek());
+        }
+
+        return root;
+    }
+
     public void searchData(int data) {
         root = search(root, data);
     }
@@ -278,6 +396,16 @@ public class AVLTree {
             System.out.print(queue.peek());
             queue.remove(queue.peek());
         }
+    }
+
+    public void deleteTree() {
+        root = delete(root);
+    }
+
+    private AVLNode delete(AVLNode root) {
+        System.out.println("Felled Tree");
+        return null;
+
     }
 
 
